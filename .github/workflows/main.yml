@@ -1,12 +1,12 @@
 name: Build .NET MAUI Windows
 
 on:
-   #push:
-    # branches: [ main ]
-   #pull_request:
-    # branches: [ main ]
+   push:
+     branches: [ main ]
+   pull_request:
+     branches: [ main ]
 
-   workflow_dispatch:
+   #workflow_dispatch:
 
 permissions:
   checks: write
