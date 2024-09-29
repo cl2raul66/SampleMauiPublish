@@ -8,10 +8,6 @@ on:
 
    workflow_dispatch:
 
-env:
-    DOTNETVERSION: 8.0.100-rc.2.23502.2
-    VSVERSION: 2022/Preview
-
 permissions:
   checks: write
   
