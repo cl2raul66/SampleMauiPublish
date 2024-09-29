@@ -1,1 +1,51 @@
 name: Build .NET MAUI Windows
+
+on:
+   push:
+     branches: [ main ]
+   pull_request:
+     branches: [ main ]
+
+  # workflow_dispatch:
+
+env:
+    DOTNETVERSION: 8.0.100-rc.2.23502.2
+    VSVERSION: 2022/Preview
+
+permissions:
+  checks: write
+  
+jobs:
+  buildMaui:
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0
+      - name: Install MAUI workload
+        run: dotnet workload install maui
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      # https://docs.microsoft.com/en-us/dotnet/maui/windows/deployment/overview
+      - name: Build Windows App
+        run: |
+          cd .\src\ThymeToPlant\ThymeToPlant
+          dotnet publish -f net8.0-windows10.0.19041.0 -c Release 
+
+      - name : Build Android App
+        run: |
+          cd .\src\ThymeToPlant\ThymeToPlant
+          dotnet publish -f net8.0-android -c Release
+            
+      - uses: actions/upload-artifact@v2
+        with:
+          name: artifacts-windows
+          path: |
+            **\*.msix
+            **\*.apk
